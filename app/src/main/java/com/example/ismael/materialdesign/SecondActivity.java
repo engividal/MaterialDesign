@@ -3,6 +3,7 @@ package com.example.ismael.materialdesign;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.ismael.materialdesigntoolbar.R;
+import com.example.ismael.materialdesign.domain.Car;
+import com.example.ismael.materialdesign.fragments.CarFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SecondActivity extends ActionBarActivity {
@@ -70,6 +75,8 @@ public class SecondActivity extends ActionBarActivity {
                 Toast.makeText(SecondActivity.this, "Settings Pressed", Toast.LENGTH_LONG).show();
             }
         });
+
+
     }
 
     @Override
@@ -102,4 +109,7 @@ public class SecondActivity extends ActionBarActivity {
 
         return true;
     }
+
+
+
 }

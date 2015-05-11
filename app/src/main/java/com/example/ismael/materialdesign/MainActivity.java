@@ -3,6 +3,7 @@ package com.example.ismael.materialdesign;
 import android.content.Intent;
 import android.net.Uri;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 
@@ -12,7 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.ismael.materialdesigntoolbar.R;
+import com.example.ismael.materialdesign.domain.Car;
+import com.example.ismael.materialdesign.fragments.CarFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -70,6 +75,15 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(MainActivity.this, "Settings Pressed", Toast.LENGTH_LONG).show();
             }
         });
+
+        // Fragment
+        CarFragment frag = (CarFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
+        if(frag == null){
+            frag = new CarFragment();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.rl_fragment_container, frag, "mainFrag");
+            ft.commit();
+        }
     }
 
     @Override
@@ -92,5 +106,18 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public List<Car> getSetCarList(int qtd) {
+        String[] models = new String[]{"Gallardo", "Vyron", "Corvette", "Pagani Zonda", "Porsche 911 Carrera", "BMW 720i", "DB77", "Mustang", "Camaro", "CT6"};
+        String[] brands = new String[]{"Lamborghini", " bugatti", "Chevrolet", "Pagani", "Porsche", "BMW", "Aston Martin", "Ford", "Chevrolet", "Cadillac"};
+        int[] photos = new int[]{R.drawable.gallardo, R.drawable.vyron, R.drawable.corvette, R.drawable.paganni_zonda, R.drawable.porsche_911, R.drawable.bmw_720, R.drawable.db77, R.drawable.mustang, R.drawable.camaro, R.drawable.ct6};
+        List<Car> listAux = new ArrayList<>();
+
+        for (int i = 0; i < qtd; i++) {
+            Car c = new Car(models[i % models.length], brands[i % brands.length], photos[i % models.length]);
+            listAux.add(c);
+        }
+        return (listAux);
     }
 }
