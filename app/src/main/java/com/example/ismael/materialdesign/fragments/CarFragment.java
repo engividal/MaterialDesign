@@ -1,11 +1,15 @@
 package com.example.ismael.materialdesign.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -56,13 +60,20 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
             }
         });
 
+        mRecyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getActivity(), mRecyclerView, this));
+
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
+        llm.setReverseLayout(true);
         mRecyclerView.setLayoutManager(llm);
+
+       /* GridLayoutManager llm = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(llm);*/
 
         mList = ((MainActivity) getActivity()).getSetCarList(10);
         CarAdapter adapter = new CarAdapter(getActivity(), mList);
-        adapter.setRecyclerViewOnClickListenerHack(this);
+        //adapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setAdapter(adapter);
 
         return view;
@@ -72,7 +83,61 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
     public void onClickListener(View view, int position) {
         Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_LONG).show();
 
-        CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
-        adapter.removeListItem(position);
+        /*CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
+        adapter.removeListItem(position);*/
+    }
+
+    public void onLongPressClickListener(View view, int position){
+        Toast.makeText(getActivity(), "Long Press Position: " + position, Toast.LENGTH_LONG).show();
+
+        /*CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
+        adapter.removeListItem(position);*/
+    }
+
+    private static class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{
+        private Context mContext;
+        private GestureDetector mGestureDetector;
+        private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
+
+        public RecyclerViewTouchListener(Context mContext, final RecyclerView recyclerView, final RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack) {
+            this.mContext = mContext;
+            this.mRecyclerViewOnClickListenerHack = mRecyclerViewOnClickListenerHack;
+            this.mGestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener(){
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    super.onLongPress(e);
+
+                    View cv = recyclerView.findChildViewUnder(e.getX(), e.getY());
+
+                    if(cv != null && mRecyclerViewOnClickListenerHack != null){
+                        mRecyclerViewOnClickListenerHack.onLongPressClickListener(cv, recyclerView.getChildPosition(cv));
+                    }
+                }
+
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    super.onLongPress(e);
+
+                    View cv = recyclerView.findChildViewUnder(e.getX(), e.getY());
+
+                    if(cv != null && mRecyclerViewOnClickListenerHack != null){
+                        mRecyclerViewOnClickListenerHack.onClickListener(cv, recyclerView.getChildPosition(cv));
+                    }
+
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+           mGestureDetector.onTouchEvent(e);
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
     }
 }
