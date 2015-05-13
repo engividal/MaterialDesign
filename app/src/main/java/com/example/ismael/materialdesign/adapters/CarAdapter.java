@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.example.ismael.materialdesign.R;
 import com.example.ismael.materialdesign.domain.Car;
 import com.example.ismael.materialdesign.interfaces.RecyclerViewOnClickListenerHack;
@@ -43,6 +45,16 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
         myViewHolder.ivCar.setImageResource(mList.get(position).getPhoto());
         myViewHolder.tvModel.setText(mList.get(position).getModel());
         myViewHolder.tvBrand.setText(mList.get(position).getBrand());
+
+        try {
+
+            YoYo.with(Techniques.Tada)
+                    .duration(700)
+                    .playOn(myViewHolder.itemView);
+
+        }catch (Exception e){
+
+        }
     }
 
     @Override

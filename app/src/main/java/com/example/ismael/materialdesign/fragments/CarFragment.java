@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,14 +44,27 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
+            //TODO corrigir bug quando tela é maior que a lista com 10 elementos.
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                //GridLayoutManager llm = (GridLayoutManager) mRecyclerView.getLayoutManager();
+
+                /*StaggeredGridLayoutManager llm = (StaggeredGridLayoutManager) mRecyclerView.getLayoutManager();
+                int[] aux = llm.findFirstCompletelyVisibleItemPositions(null);
+                int max = -1;
+
+                for (int i = 0; i < aux.length; i++){
+                    max = aux[i] > max ? aux[i] : max;
+                }*/
+
+
                 CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
 
                 if (mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1) {
+                //if (mList.size() == max + 1){
                     List<Car> listAux = ((MainActivity) getActivity()).getSetCarList(10);
 
                     for (int i = 0; i < listAux.size(); i++) {
@@ -67,8 +81,11 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
         llm.setReverseLayout(true);
         mRecyclerView.setLayoutManager(llm);
 
-       /* GridLayoutManager llm = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        /*GridLayoutManager llm = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(llm);
+
+        StaggeredGridLayoutManager llm = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        llm.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         mRecyclerView.setLayoutManager(llm);*/
 
         mList = ((MainActivity) getActivity()).getSetCarList(10);
