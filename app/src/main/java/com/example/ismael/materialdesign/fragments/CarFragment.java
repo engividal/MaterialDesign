@@ -90,7 +90,7 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
 
         mList = ((MainActivity) getActivity()).getSetCarList(10);
         CarAdapter adapter = new CarAdapter(getActivity(), mList);
-        //adapter.setRecyclerViewOnClickListenerHack(this);
+        adapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setAdapter(adapter);
 
         return view;
