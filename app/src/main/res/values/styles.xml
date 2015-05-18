@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="Theme.MyTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.MyTheme" parent="MaterialDrawerTheme.Light.DarkToolbar.TranslucentStatus">
         <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/colorPrimary</item>
 
@@ -13,7 +13,11 @@
 
     <!-- You can also set colorControlNormal, colorControlActivated
          colorControlHighlight, and colorSwitchThumbNormal. -->
-        <item name="android:colorControlNormal">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+
+        <item name="material_drawer_primary_text">@color/colorPrimarytext</item>
+        <item name="material_drawer_selected_text">@color/colorPrimary</item>
+
     </style>
     <style name="Theme.MyThemeBotton" parent="Theme.MyTheme">
         <item name="colorPrimary">@android:color/white</item>

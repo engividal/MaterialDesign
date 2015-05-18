@@ -72,7 +72,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
         }
         try {
 
-            YoYo.with(Techniques.Tada)
+            YoYo.with(Techniques.FadeInRight)
                     .duration(700)
                     .playOn(myViewHolder.itemView);
 
