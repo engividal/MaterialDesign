@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.ismael.materialdesign.domain.Car;
 import com.example.ismael.materialdesign.fragments.CarFragment;
+import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -37,12 +38,15 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+
     private Toolbar mToolbar;
     private Toolbar mToolbarBottom;
     private Drawer.Result navigationDraweLeft;
     private Drawer.Result getNavigationDraweRight;
     private AccountHeader.Result headerNavigationLeft;
     private int mPositionClicked;
+
+
 
     private OnCheckedChangeListener mOnCheckedChangeListener = new OnCheckedChangeListener() {
         @Override
@@ -62,7 +66,7 @@ public class MainActivity extends ActionBarActivity {
         mToolbar.setSubtitle("Just a Subtitle");
         setSupportActionBar(mToolbar);
 
-        mToolbarBottom = (Toolbar) findViewById(R.id.inc_tb_bottom);
+        /*mToolbarBottom = (Toolbar) findViewById(R.id.inc_tb_bottom);
         mToolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -100,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(MainActivity.this, "Settings Pressed", Toast.LENGTH_LONG).show();
             }
         });
-
+*/
         // Fragment
         CarFragment frag = (CarFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
         if (frag == null) {
@@ -258,5 +262,14 @@ public class MainActivity extends ActionBarActivity {
             listAux.add(c);
         }
         return (listAux);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(navigationDraweLeft.isDrawerOpen()){
+            navigationDraweLeft.closeDrawer();
+        }else{
+            super.onBackPressed();
+        }
     }
 }

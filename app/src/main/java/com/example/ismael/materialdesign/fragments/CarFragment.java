@@ -21,16 +21,20 @@ import com.example.ismael.materialdesign.R;
 import com.example.ismael.materialdesign.adapters.CarAdapter;
 import com.example.ismael.materialdesign.domain.Car;
 import com.example.ismael.materialdesign.interfaces.RecyclerViewOnClickListenerHack;
+import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ScrollDirectionListener;
 
 import java.util.List;
 
 /**
  * Created by Ismael on 11/05/15.
  */
-public class CarFragment extends Fragment implements RecyclerViewOnClickListenerHack {
+public class CarFragment extends Fragment implements RecyclerViewOnClickListenerHack, View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private List<Car> mList;
+
+    private FloatingActionButton fab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_list);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -61,7 +65,7 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
                 }*/
 
 
-                CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
+              /*  CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
 
                 if (mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1) {
                 //if (mList.size() == max + 1){
@@ -72,13 +76,13 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
                     }
                 }
             }
-        });
+        });*/
 
         mRecyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getActivity(), mRecyclerView, this));
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        llm.setReverseLayout(true);
+        //llm.setReverseLayout(true);
         mRecyclerView.setLayoutManager(llm);
 
         /*GridLayoutManager llm = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
@@ -92,6 +96,45 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
         CarAdapter adapter = new CarAdapter(getActivity(), mList);
         adapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setAdapter(adapter);
+
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.attachToRecyclerView(mRecyclerView, new ScrollDirectionListener() {
+            @Override
+            public void onScrollDown() {
+
+            }
+
+            @Override
+            public void onScrollUp() {
+
+            }
+        }, new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+
+                CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
+
+                if (mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1) {
+                    //if (mList.size() == max + 1){
+                    List<Car> listAux = ((MainActivity) getActivity()).getSetCarList(10);
+
+                    for (int i = 0; i < listAux.size(); i++) {
+                        adapter.addListItem(listAux.get(i), mList.size());
+                    }
+                }
+            }
+
+        });
+
+        fab.setOnClickListener(this);
 
         return view;
     }
@@ -109,6 +152,11 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
 
         /*CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
         adapter.removeListItem(position);*/
+    }
+
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(getActivity(), "FAB Pressed", Toast.LENGTH_LONG).show();
     }
 
     private static class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{
